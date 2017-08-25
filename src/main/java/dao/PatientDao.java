@@ -1,5 +1,6 @@
 package dao;
 
+import models.Cancer;
 import models.Patient;
 
 import java.util.List;
@@ -8,12 +9,12 @@ public interface PatientDao {
     //create
     void add(Patient patient);
 
-//    void addPatientToCancer(Patient patient, Cancer cancer);
+    void addPatientToCancer(Patient patient, Cancer cancer);
 //
 //    //read
     List<Patient> getAll();
 //
-//    List<Cancer> getAllCancersForAPatient(int patientId);
+    List<Cancer> getAllCancersForAPatient(int patientId);
 //
 //
     Patient findById(int id);

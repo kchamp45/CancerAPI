@@ -14,14 +14,14 @@ import static org.junit.Assert.*;
 public class Sql2oCancerDaoTest {
     private Sql2oCancerDao cancerDao;
     private Connection conn;
-//    private Sql2oPatientDao patientDao;
+    private Sql2oPatientDao patientDao;
 
     @Before
     public void setUp() throws Exception {
         String connectionString = "jdbc:h2:mem:testing;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
         Sql2o sql2o = new Sql2o(connectionString, "", "");
         cancerDao = new Sql2oCancerDao(sql2o);
-//        patientDao = new Sql2oPatientDao(sql2o);
+        patientDao = new Sql2oPatientDao(sql2o);
         conn = sql2o.open();
 
 
@@ -88,5 +88,20 @@ public class Sql2oCancerDaoTest {
         int daoSize = cancerDao.getAll().size();
         cancerDao.clearAllCancers();
         assertTrue(daoSize > 0 && daoSize >cancerDao.getAll().size());
+    }
+    @Test
+    public void addCancer_addsCancerToPatient() throws Exception {
+        Patient testPatient = setupNewPatient();
+        Patient otherPatient = setupNewPatient2();
+        patientDao.add(testPatient);
+        patientDao.add(otherPatient);
+
+        Cancer testCancer = setupNewCancer();
+        cancerDao.add(testCancer);
+
+        cancerDao.addCancerToPatient(testCancer, testPatient);
+        cancerDao.addCancerToPatient(testCancer, otherPatient);
+
+        assertEquals(2, cancerDao.getAllPatientsForACancer(testCancer.getId()).size());
     }
 }

@@ -1,10 +1,12 @@
 package dao;
 
+import models.Cancer;
 import models.Patient;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sql2oPatientDao implements PatientDao {
@@ -91,5 +93,40 @@ public class Sql2oPatientDao implements PatientDao {
         } catch (Sql2oException ex) {
             System.out.println(ex);
         }
+    }
+    @Override
+    public void addPatientToCancer(Patient patient, Cancer cancer) {
+        String sql = "INSERT INTO patients_cancers (patientId, cancerId) VALUES (:patientId, :cancerId)";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("patientId", patient.getId())
+                    .addParameter("cancerId", cancer.getId())
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+    @Override
+    public List<Cancer> getAllCancersForAPatient(int patientId) {
+        List<Cancer> cancers = new ArrayList<>(); // initialize an empty list
+        String joinQuery = "SELECT cancerId FROM patients_cancers WHERE patientId = :patientId";
+
+        try (Connection con = sql2o.open()) {
+            List<Integer> allCancerIds = con.createQuery(joinQuery)
+                    .addParameter("patientId", patientId)
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(Integer.class);
+            for (Integer cancerId : allCancerIds) {
+                String cancerQuery = "SELECT * FROM cancers WHERE id = :cancerId";
+                cancers.add(
+                        con.createQuery(cancerQuery)
+                                .addParameter("cancerId", cancerId)
+                                .throwOnMappingFailure(false)
+                                .executeAndFetchFirst(Cancer.class));
+            }
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+        return cancers;
     }
 }

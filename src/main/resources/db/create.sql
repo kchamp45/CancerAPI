@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS cancers (
     description VARCHAR
     );
 
---CREATE TABLE IF NOT EXISTS patients_cancers (
--- id int PRIMARY KEY auto_increment,
--- patientId INTEGER,
--- cancerId INTEGER
---);
+CREATE TABLE IF NOT EXISTS patients_cancers (
+ id int PRIMARY KEY auto_increment,
+ patientId INTEGER,
+ cancerId INTEGER
+);

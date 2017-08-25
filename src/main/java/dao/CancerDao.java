@@ -9,7 +9,7 @@ public interface CancerDao {
 
     void add(Cancer cancer);
 
-//    void addCancerToPatient(Cancer cancer, Patient patient);
+    void addCancerToPatient(Cancer cancer, Patient patient);
 //
 //    //read
     //find individual cancer
@@ -17,12 +17,12 @@ public interface CancerDao {
 //    //
     List<Cancer> getAll();
 //    //
-//    List<Patient> getAllPatientsForACancer(int id);
+    List<Patient> getAllPatientsForACancer(int id);
 //
 //    //update cancer info
     void update(int id, String name, String description);
 //
-//    //delete all cancerss
+//    //delete all cancers
     void clearAllCancers();
 
 //    //delete individual cancer

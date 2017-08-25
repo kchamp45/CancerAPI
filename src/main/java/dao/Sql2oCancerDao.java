@@ -1,10 +1,12 @@
 package dao;
 
 import models.Cancer;
+import models.Patient;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sql2oCancerDao implements CancerDao {
@@ -77,5 +79,43 @@ public class Sql2oCancerDao implements CancerDao {
         } catch (Sql2oException ex) {
             System.out.println(ex);
         }
+    }
+    @Override
+    public void addCancerToPatient(Cancer cancer, Patient patient){
+
+        try (Connection con = sql2o.open()) {
+            String sql = "INSERT INTO patients_cancers (patientid, cancerid) VALUES (:patientId, :cancerId)";
+            con.createQuery(sql)
+                    .addParameter("patientId", patient.getId())
+                    .addParameter("cancerId", cancer.getId())
+                    .throwOnMappingFailure(false)
+                    .executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
+    }
+
+    @Override
+    public List<Patient> getAllPatientsForACancer(int cancerId) {
+        List<Patient> patients = new ArrayList<>();
+        String joinQuery = "SELECT patientId FROM patients_cancers WHERE cancerId = :cancerId";//pull out patientids for join table when they match a cancerId in the same table
+
+        try (Connection con = sql2o.open()) {
+            List<Integer> allPatientIds = con.createQuery(joinQuery)
+                    .addParameter("cancerId", cancerId)
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(Integer.class);
+            for (Integer patientId : allPatientIds){
+                String patientQuery = "SELECT * FROM patients WHERE id = :patientId";
+                patients.add(
+                        con.createQuery(patientQuery)
+                                .addParameter("patientId", patientId) //add patientId to sql query for our search
+                                .throwOnMappingFailure(false)
+                                .executeAndFetchFirst(Patient.class));//patients (objects) pulled out will be from the patient class
+            }
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
+        return patients; //return the values found from above evaluation
     }
 }
