@@ -11,15 +11,15 @@ public interface PatientDao {
 //    void addPatientToCancer(Patient patient, Cancer cancer);
 //
 //    //read
-//    List<Patient> getAll(); //A
+    List<Patient> getAll();
 //
 //    List<Cancer> getAllCancersForAPatient(int patientId);
 //
 //
-//    Patient findById(int id);
+    Patient findById(int id);
 //
 //    //update patient info
-//    void update(int id, String type, String name, int price, String dateSold, boolean sale);
+    void update(int id, String type, String name, int age, String diagnosis);
 //
 ////   //delete individual patient
 ////    void deleteById(int id); //K
