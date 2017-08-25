@@ -69,4 +69,27 @@ public class Sql2oPatientDao implements PatientDao {
             System.out.println(ex);
         }
     }
+
+    @Override
+    public void deletePatientById(int id){
+        String sql = "DELETE from patients WHERE id = :id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    @Override
+    public void clearAllPatients() {
+        String sql = "DELETE from patients";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
 }

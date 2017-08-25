@@ -1,0 +1,81 @@
+package dao;
+
+import models.Cancer;
+import org.sql2o.Connection;
+import org.sql2o.Sql2o;
+import org.sql2o.Sql2oException;
+
+import java.util.List;
+
+public class Sql2oCancerDao implements CancerDao {
+    private final Sql2o sql2o;
+
+    public Sql2oCancerDao(Sql2o sql2o) {this.sql2o = sql2o; }
+
+    @Override
+    public void add(Cancer cancer) {
+        String sql = "INSERT INTO cancers (name, description) VALUES (:name, :description)";
+        try (Connection con = sql2o.open()) {
+            int id = (int) con.createQuery(sql)
+                    .addParameter("name", cancer.getName())
+                    .addParameter("description", cancer.getDescription())
+                    .addColumnMapping("NAME", "name")
+                    .addColumnMapping("DESCRIPTION", "description")
+                    .executeUpdate()
+                    .getKey();
+            cancer.setId(id);
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+    @Override
+    public Cancer findById(int id) {
+        try (Connection con = sql2o.open()) {
+            return con.createQuery("SELECT * FROM cancers WHERE id = :id")
+                    .addParameter("id", id)
+                    .executeAndFetchFirst(Cancer.class);
+        }
+    }
+    @Override
+    public List<Cancer> getAll() {
+        try (Connection con = sql2o.open()) {
+            return con.createQuery("SELECT * FROM cancers")
+                    .executeAndFetch(Cancer.class);
+        }
+    }
+
+    @Override
+    public void update(int id, String newName, String newDescription) {
+        String sql = "UPDATE cancers SET (name, description) = (:name, :description) WHERE id = :id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", id)
+                    .addParameter("name", newName)
+                    .addParameter("description", newDescription)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+    @Override
+    public void deleteCancerById(int id){
+        String sql = "DELETE from cancers WHERE id = :id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+    @Override
+    public void clearAllCancers() {
+        String sql = "DELETE from cancers";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+}

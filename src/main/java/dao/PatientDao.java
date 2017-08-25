@@ -22,8 +22,8 @@ public interface PatientDao {
     void update(int id, String type, String name, int age, String diagnosis);
 //
 ////   //delete individual patient
-////    void deleteById(int id); //K
+    void deletePatientById(int id);
 //
 //    //delete all patients
-//    void clearAllPatients();
+    void clearAllPatients();
 }

@@ -65,4 +65,23 @@ public class Sql2oPatientDaoTest {
         assertNotEquals(initialName, updatedPatient.getName());
 
     }
+    @Test
+    public void deletePatientById(){
+        Patient patient = setupNewPatient();
+        patientDao.add(patient);
+        patientDao.deletePatientById(patient.getId());
+        assertEquals(0, patientDao.getAll().size());
+    }
+
+    @Test
+    public void clearAllPatients(){
+        Patient patient = setupNewPatient();
+        Patient patient2 = setupNewPatient2();
+        patientDao.add(patient);
+        patientDao.add(patient2);
+        int daoSize = patientDao.getAll().size();
+        patientDao.clearAllPatients();
+        assertTrue(daoSize > 0 && daoSize >patientDao.getAll().size());
+
+    }
 }
