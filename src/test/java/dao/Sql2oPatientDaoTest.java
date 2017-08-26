@@ -40,9 +40,9 @@ public class Sql2oPatientDaoTest {
         assertNotEquals(patientId, patient.getId());
     }
     //setups for the classes
-    public Patient setupNewPatient() { return new Patient("female", "Ann", 45, "breast cancer");
+    public Patient setupNewPatient() { return new Patient("female", "breast cancer");
     }
-    public Patient setupNewPatient2(){return new Patient("male", "Bob", 30, "lung cancer");
+    public Patient setupNewPatient2(){return new Patient("male","lung cancer");
     }
     public Cancer setupNewCancer(){return new Cancer("breast cancer", "cancer of the mammory tissue");
     }
@@ -66,12 +66,12 @@ public class Sql2oPatientDaoTest {
     }
     @Test
     public void updatePatientsInfo() throws Exception {
-        String initialName = "Ann";
+        String initialType = "female";
         Patient patient = setupNewPatient();
         patientDao.add(patient);
-        patientDao.update(patient.getId(), "female", "Annette", 45, "breast cancer stage 2");
+        patientDao.update(patient.getId(), "No Gender", "breast cancer stage 2");
         Patient updatedPatient = patientDao.findById(patient.getId());
-        assertNotEquals(initialName, updatedPatient.getName());
+        assertNotEquals(initialType, updatedPatient.getType());
 
     }
     @Test
@@ -93,20 +93,22 @@ public class Sql2oPatientDaoTest {
         assertTrue(daoSize > 0 && daoSize >patientDao.getAll().size());
 
     }
+
     @Test
-    public void getAllCancersForAPatient() throws Exception {
-        Cancer testCancer  = setupNewCancer();
-        Cancer otherCancer  = setupNewCancer2();
-        cancerDao.add(testCancer);
-        cancerDao.add(otherCancer);
+    public void addCancer_addsPatientToCancer() throws Exception {
+    Cancer testCancer = setupNewCancer();
+    Cancer otherCancer = setupNewCancer2();
+    cancerDao.add(testCancer);
+    cancerDao.add(otherCancer);
 
-        Patient testPatient = setupNewPatient();
-        patientDao.add(testPatient);
-        patientDao.addPatientToCancer(testPatient,testCancer);
-        patientDao.addPatientToCancer(testPatient,otherCancer);
+    Patient testPatient = setupNewPatient();
+    patientDao.add(testPatient);
 
-        Cancer[] cancers = {testCancer, otherCancer}; //cf our results directly with our list of expected orders
+    patientDao.addPatientToCancer(testPatient, testCancer);
+    patientDao.addPatientToCancer(testPatient, otherCancer);
 
-        assertEquals(patientDao.getAllCancersForAPatient(testPatient.getId()), Arrays.asList(cancers));
-    }
+    assertEquals(2, patientDao.getAllCancersForAPatient(testPatient.getId()).size());
+}
+
+
 }

@@ -18,17 +18,13 @@ public class Sql2oPatientDao implements PatientDao {
 
     @Override
     public void add(Patient patient) {
-        String sql = "INSERT INTO patients (type, name, age, diagnosis) VALUES (:type, :name, :age, :diagnosis)";
+        String sql = "INSERT INTO patients (type, diagnosis) VALUES (:type, :diagnosis)";
 
         try (Connection con = sql2o.open()) {
             int id = (int) con.createQuery(sql)
                     .addParameter("type", patient.getType())
-                    .addParameter("name", patient.getName())
-                    .addParameter("age", patient.getAge())
                     .addParameter("diagnosis", patient.getDiagnosis())
                     .addColumnMapping("TYPE", "type")
-                    .addColumnMapping("NAME", "name")
-                    .addColumnMapping("AGE", "age")
                     .addColumnMapping("DIAGNOSIS", "diagnosis")
                     .executeUpdate()
                     .getKey();
@@ -56,14 +52,12 @@ public class Sql2oPatientDao implements PatientDao {
         }
     }
     @Override
-    public void update(int id, String newType, String newName, int newAge, String newDiagnosis) {
-        String sql = "UPDATE patients SET (type, name, age, diagnosis) = (:type, :name, :age, :diagnosis) WHERE id = :id";
+    public void update(int id, String newType, String newDiagnosis) {
+        String sql = "UPDATE patients SET (type, diagnosis) = (:type, :diagnosis) WHERE id = :id";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("id", id)
                     .addParameter("type", newType)
-                    .addParameter("name", newName)
-                    .addParameter("age", newAge)
                     .addParameter("diagnosis", newDiagnosis)
                     .throwOnMappingFailure(false)
                     .executeUpdate();
@@ -108,20 +102,18 @@ public class Sql2oPatientDao implements PatientDao {
     }
     @Override
     public List<Cancer> getAllCancersForAPatient(int patientId) {
-        List<Cancer> cancers = new ArrayList<>(); // initialize an empty list
-        String joinQuery = "SELECT cancerId FROM patients_cancers WHERE patientId = :patientId";
+        ArrayList<Cancer> cancers = new ArrayList<>(); // initialize an empty list
+        String joinQuery = "SELECT cancerid FROM patients_cancers WHERE patientid = :patientId";
 
         try (Connection con = sql2o.open()) {
-            List<Integer> allCancerIds = con.createQuery(joinQuery)
+            List<Integer> allCancersIds = con.createQuery(joinQuery)
                     .addParameter("patientId", patientId)
-                    .throwOnMappingFailure(false)
                     .executeAndFetch(Integer.class);
-            for (Integer cancerId : allCancerIds) {
+            for (Integer cancerId : allCancersIds) {
                 String cancerQuery = "SELECT * FROM cancers WHERE id = :cancerId";
                 cancers.add(
                         con.createQuery(cancerQuery)
                                 .addParameter("cancerId", cancerId)
-                                .throwOnMappingFailure(false)
                                 .executeAndFetchFirst(Cancer.class));
             }
         } catch (Sql2oException ex) {

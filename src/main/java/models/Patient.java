@@ -2,16 +2,12 @@ package models;
 
 public class Patient {
     private String type;
-    private String name;
-    private int age;
     private String diagnosis;
     private int id;
 
 
-    public Patient(String type, String name, int age, String diagnosis) {
+    public Patient(String type, String diagnosis) {
         this.type = type;
-        this.name = name;
-        this.age = age;
         this.diagnosis = diagnosis;
     }
 
@@ -21,22 +17,6 @@ public class Patient {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public String getDiagnosis() {
@@ -62,18 +42,16 @@ public class Patient {
 
         Patient patient = (Patient) o;
 
-        if (age != patient.age) return false;
+        if (id != patient.id) return false;
         if (!type.equals(patient.type)) return false;
-        if (!name.equals(patient.name)) return false;
         return diagnosis.equals(patient.diagnosis);
     }
 
     @Override
     public int hashCode() {
         int result = type.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + age;
         result = 31 * result + diagnosis.hashCode();
+        result = 31 * result + id;
         return result;
     }
 }

@@ -20,7 +20,7 @@ public interface PatientDao {
     Patient findById(int id);
 //
 //    //update patient info
-    void update(int id, String type, String name, int age, String diagnosis);
+    void update(int id, String type, String diagnosis);
 //
 ////   //delete individual patient
     void deletePatientById(int id);

@@ -37,9 +37,9 @@ public class Sql2oCancerDaoTest {
     public Cancer setupNewCancer2(){
         return new Cancer("lung cancer", "cancer of the respiratory tissue");
     }
-    public Patient setupNewPatient() { return new Patient("female", "Ann", 45, "breast cancer");
+    public Patient setupNewPatient() { return new Patient("female",  "breast cancer");
     }
-    public Patient setupNewPatient2(){return new Patient("male", "Bob", 30, "lung cancer");
+    public Patient setupNewPatient2(){return new Patient("male",  "lung cancer");
     }
     @Test
     public void addingCourseSetsId() throws Exception {
@@ -103,5 +103,22 @@ public class Sql2oCancerDaoTest {
         cancerDao.addCancerToPatient(testCancer, otherPatient);
 
         assertEquals(2, cancerDao.getAllPatientsForACancer(testCancer.getId()).size());
+    }
+    @Test
+    public void deletingCancerAlsoUpdatesJoinTable() throws Exception {
+        Patient testPatient = setupNewPatient();
+        patientDao.add(testPatient);
+
+        Cancer testCancer  = setupNewCancer();
+        cancerDao.add(testCancer);
+
+        Cancer otherCancer = setupNewCancer2();
+        cancerDao.add(otherCancer);
+
+        cancerDao.addCancerToPatient(testCancer, testPatient);
+        cancerDao.addCancerToPatient(otherCancer, testPatient);
+
+        cancerDao.deleteCancerById(testCancer.getId());
+        assertEquals(0, cancerDao.getAllPatientsForACancer(testCancer.getId()).size());
     }
 }

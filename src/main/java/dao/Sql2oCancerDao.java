@@ -60,12 +60,17 @@ public class Sql2oCancerDao implements CancerDao {
         }
     }
     @Override
-    public void deleteCancerById(int id){
+    public void deleteCancerById(int id) {
         String sql = "DELETE from cancers WHERE id = :id";
+        String deleteJoin = "DELETE from patients_cancers WHERE cancerid = :cancerId";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("id", id)
                     .executeUpdate();
+            con.createQuery(deleteJoin)
+                    .addParameter("cancerId", id)
+                    .executeUpdate();
+
         } catch (Sql2oException ex) {
             System.out.println(ex);
         }
@@ -118,4 +123,5 @@ public class Sql2oCancerDao implements CancerDao {
         }
         return patients; //return the values found from above evaluation
     }
+
 }

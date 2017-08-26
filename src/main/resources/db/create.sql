@@ -3,14 +3,14 @@ SET MODE PostgreSQL;
 CREATE TABLE IF NOT EXISTS patients (
     id int PRIMARY KEY auto_increment,
     type VARCHAR,
+    diagnosis VARCHAR,
     name VARCHAR,
     age INT,
-    diagnosis VARCHAR,
     geneMutation VARCHAR,
-    famHistory VARCHAR,
+    famHistory BOOLEAN,
     habit INT,
     habitDuration VARCHAR
-    );
+   );
 
 CREATE TABLE IF NOT EXISTS cancers (
     id int PRIMARY KEY auto_increment,
