@@ -1,8 +1,10 @@
 import com.google.gson.Gson;
+import dao.Sql2oCancerDao;
 import dao.Sql2oTreatmentDao;
 import dao.Sql2oPatientADao;
 import dao.Sql2oPatientDao;
 import exceptions.ApiException;
+import models.Cancer;
 import models.Treatment;
 import models.Patient;
 import models.PatientA;
@@ -19,6 +21,7 @@ public class App {
         Sql2oTreatmentDao treatmentDao;
         Sql2oPatientDao patientDao;
         Sql2oPatientADao patientADao;
+        Sql2oCancerDao cancerDao;
         org.sql2o.Connection conn;
         Gson gson = new Gson();
 
@@ -27,6 +30,7 @@ public class App {
         patientDao = new Sql2oPatientDao(sql2o);
         treatmentDao = new Sql2oTreatmentDao(sql2o);
         patientADao = new Sql2oPatientADao(sql2o);
+        cancerDao = new Sql2oCancerDao(sql2o);
         conn = sql2o.open();
 
         //CREATE
@@ -85,6 +89,33 @@ public class App {
             res.status(201);
             return gson.toJson(patientA);
         });
+
+
+        post("/cancers/new", "application/json", (req, res) -> {
+            Cancer cancer = gson.fromJson(req.body(), Cancer.class);
+            cancerDao.add(cancer);
+            res.status(201);;
+            return gson.toJson(cancer);
+        });
+
+        get("/cancers", "application/json", (req, res) -> {
+            return gson.toJson(cancerDao.getAll());
+        });
+
+        get("/cancers/:id", "application/json", (req, res) -> {
+            int cancerId = Integer.parseInt(req.params("id"));
+            return gson.toJson(cancerDao.findById(cancerId));
+        });
+
+        post("/cancers/:cancerId/patients/new", "application/json", (req, res) -> {
+            int cancerId = Integer.parseInt(req.params("cancerId"));
+            Patient patient = gson.fromJson(req.body(), Patient.class);
+            patient.setCancerId(cancerId); //why do I need to set separately?
+            patientDao.add(patient);
+            res.status(201);
+            return gson.toJson(patient);
+        });
+
         //FILTERS
         exception(ApiException.class, (exception, req, res) -> {
             ApiException err = (ApiException) exception;
