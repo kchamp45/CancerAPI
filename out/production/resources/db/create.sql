@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS patients (
     diagnosis VARCHAR,
     name VARCHAR,
     age INT,
+    cancerId INT,
     geneMutation VARCHAR,
     famHistory BOOLEAN
 
