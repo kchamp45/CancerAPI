@@ -5,7 +5,7 @@
 ## Description
 Welcome to this application. Here you will be able to research information regarding cancer as reflected in different patients.  If you are an administrator, you can add cancer types and patient statics.  You can also update and delete entry regarding the patient information and/or the cancers that affect that individual.
 
-![alt text] (screenshots/postman.png "Postman to create API")
+![alt text] (images/postman.png "Postman to create API")
 
 ## Development Specifications
 | Behavior      | Example Input         | Example Output        |
