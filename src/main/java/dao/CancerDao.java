@@ -9,22 +9,14 @@ public interface CancerDao {
 
     void add(Cancer cancer);
 
-    void addCancerToPatient(Cancer cancer, Patient patient);
-//
-//    //read
-    //find individual cancer
-    Cancer findById(int id);
-//    //
     List<Cancer> getAll();
-//    //
-    List<Patient> getAllPatientsForACancer(int id);
-//
-//    //update cancer info
-    void update(int id, String name, String description);
-//
-//    //delete all cancers
-    void clearAllCancers();
 
-//    //delete individual cancer
+    List<Patient>getAllPatientsByCancer(int cancerId);
+//
+    Cancer findById(int id);
+
+    void update(int id, String type, String description);
+//
     void deleteCancerById(int id);
+
 }

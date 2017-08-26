@@ -1,9 +1,9 @@
 import com.google.gson.Gson;
-import dao.Sql2oCancerDao;
+import dao.Sql2oTreatmentDao;
 import dao.Sql2oPatientADao;
 import dao.Sql2oPatientDao;
 import exceptions.ApiException;
-import models.Cancer;
+import models.Treatment;
 import models.Patient;
 import models.PatientA;
 import org.sql2o.Sql2o;
@@ -16,7 +16,7 @@ import static spark.Spark.*;
 public class App {
 
     public static void main(String[] args) {
-        Sql2oCancerDao cancerDao;
+        Sql2oTreatmentDao treatmentDao;
         Sql2oPatientDao patientDao;
         Sql2oPatientADao patientADao;
         org.sql2o.Connection conn;
@@ -25,7 +25,7 @@ public class App {
         String connectionString = "jdbc:h2:~/jadle.db;INIT=RUNSCRIPT from 'classpath:db/create.sql'"; //check me!
         Sql2o sql2o = new Sql2o(connectionString, "", "");
         patientDao = new Sql2oPatientDao(sql2o);
-        cancerDao = new Sql2oCancerDao(sql2o);
+        treatmentDao = new Sql2oTreatmentDao(sql2o);
         patientADao = new Sql2oPatientADao(sql2o);
         conn = sql2o.open();
 
@@ -61,20 +61,20 @@ public class App {
             return gson.toJson(patientDao.getAll());
         });
 //
-      post("/cancers/new", "application/json", (req, res) -> {
-        Cancer cancer = gson.fromJson(req.body(), Cancer.class);
-        cancerDao.add(cancer);
+      post("/treatments/new", "application/json", (req, res) -> {
+        Treatment treatment = gson.fromJson(req.body(), Treatment.class);
+        treatmentDao.add(treatment);
         res.status(201);;
-        return gson.toJson(cancer);
+        return gson.toJson(treatment);
     });
 
-        get("/cancers", "application/json", (req, res) -> {
-            return gson.toJson(cancerDao.getAll());
+        get("/treatments", "application/json", (req, res) -> {
+            return gson.toJson(treatmentDao.getAll());
         });
 
-        get("/cancers/:id", "application/json", (req, res) -> {
-            int cancerId = Integer.parseInt(req.params("id"));
-            return gson.toJson(cancerDao.findById(cancerId));
+        get("/treatments/:id", "application/json", (req, res) -> {
+            int treatmentId = Integer.parseInt(req.params("id"));
+            return gson.toJson(treatmentDao.findById(treatmentId));
         });
 
         post("/patients/:patientId/patientA/new", "application/json", (req, res) -> {

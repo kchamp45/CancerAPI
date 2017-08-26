@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 
 public class Sql2oPatientADaoTest {
     private Sql2oPatientDao patientDao;
-    private Sql2oCancerDao cancerDao;
+    private Sql2oTreatmentDao treatmentDao;
     private Sql2oPatientADao patientADao;
     private Connection conn;
 
@@ -59,7 +59,7 @@ public class Sql2oPatientADaoTest {
         String initialAge = "30";
         PatientA patientA = setupNewPatientA();
         patientADao.add(patientA);
-        patientADao.updatePatientA(patientA.getId(), "female", "breast cancer", "Ann", 35, "BRCA1/BRCA2", true);
+        patientADao.updatePatientA(patientA.getId(), "female", "stage 2", "Ann", 35, "BRCA1/BRCA2");
         PatientA updatedPatientA = patientADao.findById(patientA.getId());
         assertNotEquals(initialAge, updatedPatientA.getAge());
     }
@@ -73,10 +73,10 @@ public class Sql2oPatientADaoTest {
 
 
     public PatientA setupNewPatientA() {
-        return new PatientA("female",  "breast cancer", "Ann", 45,"BRCA1/BRCA2", true);
+        return new PatientA("female",  "stage 2", "Ann", 45,1, "BRCA1/BRCA2");
     }
-    public Patient setupNewPatient() { return new Patient("female","breast cancer");
+    public Patient setupNewPatient() { return new Patient("female","stage 2", "Susie", 50, 1);
     }
-    public Patient setupNewPatient2(){return new Patient("male", "lung cancer");
+    public Patient setupNewPatient2(){return new Patient("male", "stage 4", "Bob", 55, 1);
     }
 }

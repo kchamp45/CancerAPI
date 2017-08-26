@@ -1,6 +1,7 @@
 package dao;
 
 import models.Cancer;
+import models.Treatment;
 import models.Patient;
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +16,7 @@ import static org.junit.Assert.*;
 
 public class Sql2oPatientDaoTest {
     private Sql2oPatientDao patientDao;
+    private Sql2oTreatmentDao treatmentDao;
     private Sql2oCancerDao cancerDao;
     private Connection conn;
 
@@ -40,14 +42,14 @@ public class Sql2oPatientDaoTest {
         assertNotEquals(patientId, patient.getId());
     }
     //setups for the classes
-    public Patient setupNewPatient() { return new Patient("female", "breast cancer");
+    public Patient setupNewPatient() { return new Patient("female", "stage 2", "Ann", 45, 1);
     }
-    public Patient setupNewPatient2(){return new Patient("male","lung cancer");
+    public Patient setupNewPatient2(){return new Patient("male","stage 4", "Bob", 55, 1);
     }
-    public Cancer setupNewCancer(){return new Cancer("breast cancer", "cancer of the mammory tissue");
+    public Treatment setupNewTreatment(){return new Treatment("chemotherapy", "6 months");
     }
-    public Cancer setupNewCancer2() {
-        return new Cancer("lung cancer", "cancer of the respiratory tissue");
+    public Treatment setupNewTreatment2() {
+        return new Treatment("radiation", "3 months");
     }
 
     @Test
@@ -66,12 +68,12 @@ public class Sql2oPatientDaoTest {
     }
     @Test
     public void updatePatientsInfo() throws Exception {
-        String initialType = "female";
+        String initialGender = "female";
         Patient patient = setupNewPatient();
         patientDao.add(patient);
-        patientDao.update(patient.getId(), "No Gender", "breast cancer stage 2");
+        patientDao.update(patient.getId(), "No Gender", "stage 2", "Ann", 45);
         Patient updatedPatient = patientDao.findById(patient.getId());
-        assertNotEquals(initialType, updatedPatient.getType());
+        assertNotEquals(initialGender, updatedPatient.getGender());
 
     }
     @Test
@@ -95,19 +97,19 @@ public class Sql2oPatientDaoTest {
     }
 
     @Test
-    public void addCancer_addsPatientToCancer() throws Exception {
-    Cancer testCancer = setupNewCancer();
-    Cancer otherCancer = setupNewCancer2();
-    cancerDao.add(testCancer);
-    cancerDao.add(otherCancer);
+    public void addTreatment_addsPatientToTreatment() throws Exception {
+    Treatment testTreatment = setupNewTreatment();
+    Treatment otherTreatment = setupNewTreatment2();
+    treatmentDao.add(testTreatment);
+    treatmentDao.add(otherTreatment);
 
     Patient testPatient = setupNewPatient();
     patientDao.add(testPatient);
 
-    patientDao.addPatientToCancer(testPatient, testCancer);
-    patientDao.addPatientToCancer(testPatient, otherCancer);
+    patientDao.addPatientToTreatment(testPatient, testTreatment);
+    patientDao.addPatientToTreatment(testPatient, otherTreatment);
 
-    assertEquals(2, patientDao.getAllCancersForAPatient(testPatient.getId()).size());
+    assertEquals(2, patientDao.getAllTreatmentsForAPatient(testPatient.getId()).size());
 }
 
 
