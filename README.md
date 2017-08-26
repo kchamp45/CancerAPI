@@ -5,7 +5,6 @@
 ## Description
 Welcome to this application. Here you will be able to research information regarding cancer as reflected in different patients.  If you are an administrator, you can add cancer types and patient statics.  You can also update and delete entry regarding the patient information and/or the cancers that affect that individual.
 
-<img width="1160" alt="screen shot 2017-08-25 at 5 27 05 pm" src="https://user-images.githubusercontent.com/29713471/29736915-ba8bd872-89ba-11e7-8c41-ed9b8e9aa379.png">
 
 
 ## Development Specifications
