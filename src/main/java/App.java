@@ -99,32 +99,6 @@ public class App {
         after((req, res) ->{
             res.type("application/json");
         });
-//            post("/cancers/new", "application/json", (req, res) -> {
-//                Order cancer = gson.fromJson(req.body(), Order.class);
-//                cancerDao.add(cancer);
-//                res.status(201);;
-//                return gson.toJson(cancer);
-//            });
-//
-//            //READ
-//            get("/cancers", "application/json", (req, res) -> {
-//                return gson.toJson(cancerDao.getAll());
-//            });
-//
-//            get("/cancers/:id", "application/json", (req, res) -> {
-//                int cancerId = Integer.parseInt(req.params("id"));
-//                return gson.toJson(cancerDao.findById(cancerId));
-//            });
-//
-//            post("/patients/:patientId/backpack/new", "application/json", (req, res) -> {
-//                int patientId = Integer.parseInt(req.params("patientId"));
-//                Backpack backpack = gson.fromJson(req.body(), Backpack.class);
-//                backpack.setBackpackId(patientId); //why do I need to set separately?
-//                backpackDao.add(backpack);
-//                res.status(201);
-//                return gson.toJson(backpack);
-//            });
-
-}
+    }
 
 }
