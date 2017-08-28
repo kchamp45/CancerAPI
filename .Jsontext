@@ -1,0 +1,30 @@
+Create patient
+{
+"gender": "female",
+"diagnosis": "stage 2",
+"name": "Ann",
+"age": 45,
+"cancerId": 2
+}
+
+Create patientA
+{
+"gender": "female",
+"diagnosis": "stage 2",
+"name": "Ann",
+"age": 45,
+"cancerId": 2
+"geneMutation": "BRCA1/BRCA2"
+}
+
+Create treatment
+{
+"description": "chemotherapy",
+"duration": "6 months"
+}
+
+Create cancer
+{
+"type": "breast cancer",
+"description": "cancer of the mammary tissue"
+}
