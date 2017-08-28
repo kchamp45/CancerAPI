@@ -11,6 +11,7 @@ import models.PatientA;
 import org.sql2o.Sql2o;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static spark.Spark.*;
@@ -40,8 +41,12 @@ public class App {
             res.status(201);;
             return gson.toJson(patient);
         });
-        get("/patients", "application/json", (req, res) -> {
-            Patient patient = gson.fromJson(req.body(), Patient.class);
+
+        get("/patients", "application/json", (req, res) -> {//
+            List<Patient> patient = patientDao.getAll();
+            if(patient.isEmpty()){
+                throw new ApiException(404, String.format("No patient listed yet"));
+            }
             res.status(201);;
             return gson.toJson(patientDao.getAll());
         });
