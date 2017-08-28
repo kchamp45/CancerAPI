@@ -26,6 +26,7 @@ public class Sql2oPatientDaoTest {
         String connectionString = "jdbc:h2:mem:testing;INIT=RUNSCRIPT from 'classpath:db/create.sql'";
         Sql2o sql2o = new Sql2o(connectionString, "", "");
         patientDao = new Sql2oPatientDao(sql2o);
+        treatmentDao = new Sql2oTreatmentDao(sql2o);
         conn = sql2o.open();
     }
 

@@ -98,7 +98,7 @@ public class Sql2oPatientDao implements PatientDao {
     }
     @Override
     public void addPatientToTreatment(Patient patient, Treatment treatment) {
-        String sql = "INSERT INTO medPlans (patientId, treatmentId) VALUES (:patientId, :treatmentId)";
+        String sql = "INSERT INTO medplans (patientId, treatmentId) VALUES (:patientId, :treatmentId)";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("patientId", patient.getId())
@@ -111,7 +111,7 @@ public class Sql2oPatientDao implements PatientDao {
     @Override
     public List<Treatment> getAllTreatmentsForAPatient(int patientId) {
         ArrayList<Treatment> treatments = new ArrayList<>(); // initialize an empty list
-        String joinQuery = "SELECT treatmentId FROM medPlans WHERE patientId = :patientId";
+        String joinQuery = "SELECT treatmentId FROM medplans WHERE patientId = :patientId";
 
         try (Connection con = sql2o.open()) {
             List<Integer> allTreatmentsIds = con.createQuery(joinQuery)

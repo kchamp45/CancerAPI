@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS cancers (
     description VARCHAR
     ) ;
 
-CREATE TABLE IF NOT EXISTS medPlans (
+CREATE TABLE IF NOT EXISTS medplans (
      id int PRIMARY KEY auto_increment,
      patientId INTEGER,
      treatmentId INTEGER
