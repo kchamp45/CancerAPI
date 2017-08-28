@@ -6,7 +6,7 @@
 Welcome to this application. Here you will be able to research information regarding cancer as reflected in different patients.  If you are an administrator, you can add cancer types and patient statics.  You can also update and delete entry regarding the patient information and/or the cancers that affect that individual.
 
 ![Screenshot](https://github.com/kchamp45/CancerAPI/blob/master/src/main/resources/public/images/Screen%20Shot%202017-08-28%20at%2011.17.41%20AM.png)
-
+![Screenshot](https://github.com/kchamp45/CancerAPI/blob/master/src/main/resources/public/images/Screen%20Shot%202017-08-28%20at%2011.32.06%20AM.png)
 ## Development Specifications
 | Behavior      | Example Input         | Example Output        |
 | ------------- | ------------- | ------------- |
