@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS patients (
     cancerId INT,
     geneMutation VARCHAR,
     famHistory BOOLEAN
-
    );
 
 CREATE TABLE IF NOT EXISTS treatments (

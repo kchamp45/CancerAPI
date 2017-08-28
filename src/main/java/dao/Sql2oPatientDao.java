@@ -111,7 +111,7 @@ public class Sql2oPatientDao implements PatientDao {
     @Override
     public List<Treatment> getAllTreatmentsForAPatient(int patientId) {
         ArrayList<Treatment> treatments = new ArrayList<>(); // initialize an empty list
-        String joinQuery = "SELECT treatmentid FROM medPlans WHERE patientid = :patientId";
+        String joinQuery = "SELECT treatmentId FROM medPlans WHERE patientId = :patientId";
 
         try (Connection con = sql2o.open()) {
             List<Integer> allTreatmentsIds = con.createQuery(joinQuery)

@@ -110,11 +110,12 @@ public class App {
         post("/cancers/:cancerId/patients/new", "application/json", (req, res) -> {
             int cancerId = Integer.parseInt(req.params("cancerId"));
             Patient patient = gson.fromJson(req.body(), Patient.class);
-            patient.setCancerId(cancerId); //why do I need to set separately?
+            patient.setCancerId(cancerId);
             patientDao.add(patient);
             res.status(201);
             return gson.toJson(patient);
         });
+
 
         //FILTERS
         exception(ApiException.class, (exception, req, res) -> {

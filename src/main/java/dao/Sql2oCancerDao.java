@@ -76,6 +76,7 @@ public class Sql2oCancerDao implements CancerDao {
         try (Connection con = sql2o.open()) {
             return con.createQuery("SELECT * FROM patients WHERE cancerId = :cancerId")
                     .addParameter("cancerId", cancerId)
+
                     .executeAndFetch(Patient.class); //fetch a list
         }
     }
